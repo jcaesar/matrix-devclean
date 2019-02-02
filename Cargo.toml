@@ -1,0 +1,24 @@
+[package]
+name = "matrix-devclean"
+version = "0.1.0"
+authors = ["Julius Michaelis <mdcs@liftm.de>"]
+edition = "2018"
+
+[dependencies]
+url = "1.7"
+#restson = "^0.5"
+restson = { git = "https://github.com/jcaesar/restson-rust", rev = "a6c190af161901b4052739ab530cffcf45a9469a" }
+serde = "^1.0"
+serde_json = "^1.0"
+serde_derive = "^1.0"
+serde_millis = "0.1"
+failure = "0.1"
+rpassword = "2.1.0"
+clap = "2.32"
+humantime = "1.2"
+once_cell = "0.1.7"
+http = "0.1.14"
+
+[[bin]]
+name = "matrix-devclean"
+path = "main.rs"
