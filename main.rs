@@ -184,7 +184,7 @@ fn main() -> Fallible<()> {
 			(about: "Delete Devices (TBI)")
 			(@arg expire: -e --expire +takes_value  "Delete all devices older than X (e.g. \"30days\")")
 			(@arg clean: -c --clean  "Cleanup insane devices (No display name, strange date value)")
-			(@arg ids: -i --ids "List of IDs to remove")
+			(@arg ids: -i --ids +takes_value +multiple "List of IDs to remove")
 		)
 	).get_matches();
 	let hs = Url::parse(params.value_of("homeserver").expect("homeserver url"))?;
@@ -206,7 +206,11 @@ fn main() -> Fallible<()> {
 		},
 		("delete", Some(subpars)) => {
 			let mut del: HashSet<String> = HashSet::new();
-			subpars.value_of("ids").map(|ids| ids.split(",").map(|id| del.insert(id.trim().to_string())));
+			for ids in subpars.values_of("ids") {
+				for id in ids {
+					del.insert(id.trim().to_string());
+				}
+			}
 			for d in subpars.value_of("expire") {
 				let dur = d.parse::<humantime::Duration>().expect("Parsing expiration duration").into();
 				let deltil = SystemTime::now() - dur;
